@@ -54,22 +54,6 @@
       color: #006400;
       margin-top: 25px;
     }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      margin-top: 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
   </style>
 </head>
 <body>
@@ -83,8 +67,6 @@
     <label>艺术分（0–300）: <span id="art_val">220</span></label>
     <input type="range" id="art" min="0" max="300" value="220">
     <input type="number" id="art_input" value="220">
-
-
 
     <div class="result" id="result">总分: 0</div>
   </div>
@@ -107,28 +89,24 @@
       document.getElementById("art_val").textContent = yishu;
     }
 
-    // 同步滑条和输入框
-    cultureSlider.addEventListener("input", () => {
-      cultureInput.value = cultureSlider.value;
-      calculate();
-    });
+    // 同步滑条和输入框，并实时计算
+    function syncInputAndCalc(slider, input, updateLabel) {
+      slider.addEventListener("input", () => {
+        input.value = slider.value;
+        updateLabel(slider.value);
+        calculate();
+      });
+      input.addEventListener("input", () => {
+        slider.value = input.value;
+        updateLabel(input.value);
+        calculate();
+      });
+    }
 
-    cultureInput.addEventListener("input", () => {
-      cultureSlider.value = cultureInput.value;
-      calculate();
-    });
+    syncInputAndCalc(cultureSlider, cultureInput, val => document.getElementById("culture_val").textContent = val);
+    syncInputAndCalc(artSlider, artInput, val => document.getElementById("art_val").textContent = val);
 
-    artSlider.addEventListener("input", () => {
-      artInput.value = artSlider.value;
-      calculate();
-    });
-
-    artInput.addEventListener("input", () => {
-      artSlider.value = artInput.value;
-      calculate();
-    });
-
-    calculate();
+    calculate(); // 初始计算
   </script>
 </body>
 </html>
