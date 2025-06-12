@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>总分计算器</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+        }
+        input[type=range] {
+            width: 100%;
+        }
+        .label {
+            margin-top: 10px;
+        }
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h2>总分计算器</h2>
+
+    <div class="label">文化分（0-750）: <span id="culture_val">420</span></div>
+    <input type="range" id="culture" min="0" max="750" value="420">
+    <input type="number" id="culture_input" value="420">
+
+    <div class="label">艺术分（0-300）: <span id="art_val">220</span></div>
+    <input type="range" id="art" min="0" max="300" value="220">
+    <input type="number" id="art_input" value="220">
+
+    <div class="result" id="result">总分: 0</div>
+
+    <script>
+        const cultureSlider = document.getElementById("culture");
+        const artSlider = document.getElementById("art");
+        const cultureInput = document.getElementById("culture_input");
+        const artInput = document.getElementById("art_input");
+
+        function calculate() {
+            const wenhua = parseFloat(cultureSlider.value);
+            const yishu = parseFloat(artSlider.value);
+            const wh = (wenhua / 750.0) * 0.5 * 300;
+            const ys = (yishu / 300.0) * 0.5 * 300;
+            const total = wh + ys;
+            document.getElementById("result").textContent = "总分: " + total.toFixed(2);
+            document.getElementById("culture_val").textContent = wenhua;
+            document.getElementById("art_val").textContent = yishu;
+        }
+
+        // 双向绑定
+        cultureSlider.addEventListener("input", () => {
+            cultureInput.value = cultureSlider.value;
+            calculate();
+        });
+        cultureInput.addEventListener("input", () => {
+            cultureSlider.value = cultureInput.value;
+            calculate();
+        });
+        artSlider.addEventListener("input", () => {
+            artInput.value = artSlider.value;
+            calculate();
+        });
+        artInput.addEventListener("input", () => {
+            artSlider.value = artInput.value;
+            calculate();
+        });
+
+        calculate(); // 初始计算
+    </script>
+</body>
+</html>
