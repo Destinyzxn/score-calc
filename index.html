@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>总分计算器</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      padding: 16px;
+      margin: 0;
+      background-color: #f7f7f7;
+      color: #333;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+
+    input[type=range] {
+      width: 100%;
+      margin: 5px 0;
+    }
+
+    input[type=number] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .result {
+      font-size: 22px;
+      text-align: center;
+      color: #006400;
+      margin-top: 25px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>总分计算器</h2>
+
+    <label>文化分（0–750）: <span id="culture_val">420</span></label>
+    <input type="range" id="culture" min="0" max="750" value="420">
+    <input type="number" id="culture_input" value="420">
+
+    <label>艺术分（0–300）: <span id="art_val">220</span></label>
+    <input type="range" id="art" min="0" max="300" value="220">
+    <input type="number" id="art_input" value="220">
+
+    <button onclick="calculate()">计算总分</button>
+
+    <div class="result" id="result">总分: 0</div>
+  </div>
+
+  <script>
+    const cultureSlider = document.getElementById("culture");
+    const artSlider = document.getElementById("art");
+    const cultureInput = document.getElementById("culture_input");
+    const artInput = document.getElementById("art_input");
+
+    function calculate() {
+      const wenhua = parseFloat(cultureInput.value);
+      const yishu = parseFloat(artInput.value);
+      const wh = (wenhua / 750.0) * 0.5 * 300;
+      const ys = (yishu / 300.0) * 0.5 * 300;
+      const total = wh + ys;
+
+      document.getElementById("result").textContent = "总分: " + total.toFixed(2);
+      document.getElementById("culture_val").textContent = wenhua;
+      document.getElementById("art_val").textContent = yishu;
+    }
+
+    // 同步滑条和输入框
+    cultureSlider.addEventListener("input", () => {
+      cultureInput.value = cultureSlider.value;
+      calculate();
+    });
+
+    cultureInput.addEventListener("input", () => {
+      cultureSlider.value = cultureInput.value;
+      calculate();
+    });
+
+    artSlider.addEventListener("input", () => {
+      artInput.value = artSlider.value;
+      calculate();
+    });
+
+    artInput.addEventListener("input", () => {
+      artSlider.value = artInput.value;
+      calculate();
+    });
+
+    calculate();
+  </script>
+</body>
+</html>
